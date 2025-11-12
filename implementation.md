@@ -14,12 +14,7 @@ Table of contents
 - Running the app (Streamlit)
 - How the reflection loop works (detailed)
 - Verification / code execution behavior
-- Using a real LLM provider (Groq /)
-- Development view / debugging (optional)
-- Tests (unit testing with pytest)
-- How to extend or integrate LangGraph later
-- Security & operational recommendations
-- Troubleshooting common issues
+- Using a real LLM provider (Groq)
 
 --------------------------------------------------------------------------------
 Project overview
@@ -233,52 +228,6 @@ if os.getenv("DEV_VIEW", "false").lower() in ("1", "true", "yes"):
 Remember to remove or guard this behind authentication before sharing the UI widely.
 
 --------------------------------------------------------------------------------
-Tests (pytest)
---------------------------------------------------------------------------------
-
-Write unit tests that mock the client so you do not call real LLMs during CI.
-
-Example test (save as `tests/test_reflection_agent.py`):
-
-```python
-import pytest
-from agentic_patterns.reflection_agent import ReflectionAgent
-
-class DummyClient:
-    class chat:
-        class completions:
-            @staticmethod
-            def create(messages, model):
-                sys_msgs = [m for m in messages if m['role']=='system']
-                if any('programmer' in m['content'].lower() for m in sys_msgs):
-                    return {'choices': [{'message': {'content': '```python\\ndef foo():\\n    return 42\\n```'}}]}
-                if any('review' in m['content'].lower() for m in sys_msgs):
-                    return {'choices': [{'message': {'content': '<OK>'}}]}
-                return {'choices': [{'message': {'content': 'ok'}}]}
-
-def test_run_stops_on_ok():
-    client = DummyClient()
-    agent = ReflectionAgent(client=client, model='x', stop_on_ok=True)
-    res = agent.run(
-        user_msg="Make snippet",
-        generation_system_prompt="You are a programmer",
-        reflection_system_prompt="You are a reviewer",
-        n_steps=5
-    )
-    assert len(res['rounds']) == 1
-    assert 'final_assistant' in res
-```
-
-Run tests:
-```
-pip install pytest
-pytest -q
-```
-
-CI recommendation (optional):
-- Create a lightweight GitHub Actions workflow running tests with Python 3.11 and `pytest`. Keep the workflow simple — no secrets or heavy dependencies.
-
---------------------------------------------------------------------------------
 How to extend or integrate LangGraph later
 --------------------------------------------------------------------------------
 
@@ -298,4 +247,4 @@ If you want to replace the in-house loop with an orchestrator like LangGraph:
 Notes:
 - LangGraph adds observability and better orchestration; helpful if you later need multiple reviewers, parallel reviewers, or complex branching.
 
---------------------------------------------------------------------------------
+
