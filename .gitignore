@@ -1,0 +1,89 @@
+# ===============================
+# AutoCritique (Reflection Pattern) Project
+# .gitignore for Python + Streamlit + LangGraph
+# ===============================
+
+# --- Python build / cache files ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- Virtual environments ---
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# --- Environment variables ---
+*.env
+.env.*
+
+# --- IDE / Editor settings ---
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# --- OS generated files ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Logs & debug ---
+*.log
+logs/
+debug.log
+
+# --- Streamlit cache ---
+.streamlit/
+.streamlit/secrets.toml
+
+# --- Jupyter notebook checkpoints ---
+.ipynb_checkpoints/
+
+# --- Byte-compiled / temporary files ---
+*.bak
+*.tmp
+*.swp
+*~
+
+# --- Build / distribution artifacts ---
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# --- Test / Coverage files ---
+.coverage
+htmlcov/
+.tox/
+.nox/
+.pytest_cache/
+.cache/
+
+# --- Project specific ---
+# Any generated code or LLM output logs
+outputs/
+generated/
+reflections/
+artifacts/
+__history__/
+
+# --- Dependency folders ---
+node_modules/
+package-lock.json
+
+# --- Local database / config files ---
+*.sqlite3
+*.db
+*.json
+
+# --- Backup images or data ---
+/*.png
+/data/
+media/
+uploads/
+screenshots/
